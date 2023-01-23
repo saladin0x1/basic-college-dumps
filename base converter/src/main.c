@@ -6,17 +6,20 @@ int main()
 {
     char repeat = 'y';
     while (repeat == 'y') {
+        system("cls");
         char num[100];
         int from_base,to_base;
 
-        printf("Enter a number: ");
+        printf("\n-------------------------------\n");
+        printf("Enter a number: \n=>");
         scanf("%s", num);
-
-
-        printf("Enter the base of the number: ");
+        printf("What's the base of that number?\n=>");
         scanf("%d", &from_base);
+        printf("\n-------------------------------\n");
 
+/*touch rien touche pas comment l pointer*/
         const char* from_base_string = "";
+        /*fookin switch case*/
         switch(from_base) {
             case 2:
                 from_base_string = "binary";
@@ -34,7 +37,8 @@ int main()
                 printf("Invalid choice\n");
                 return 0;
         }
-
+        /*another one*/
+       // printf("-------------------------------\n");
         printf("Select the base to convert to:\n");
         printf("1. Binary\n");
         printf("2. Octal\n");
@@ -43,6 +47,8 @@ int main()
         printf("5. Quit\n");
         printf("Enter your choice: ");
         scanf("%d", &to_base);
+        printf("-------------------------------\n");
+
 
         const char* to_base_string = "";
         switch(to_base) {
@@ -88,7 +94,7 @@ int main()
         scanf(" %c", &repeat);
        if (repeat == 'n')
     {
-        printf("goodbye");
+        printf("Good Bye.");
         return 0;
     }
         
