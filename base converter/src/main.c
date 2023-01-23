@@ -4,19 +4,22 @@
 #include "convert_base_file.c"
 int main()
 {
-    char repeat; 
-    while (1) {
+    char repeat = 'y';
+    while (repeat == 'y') {
+        system("cls");
         char num[100];
         int from_base,to_base;
-        system("cls");
-        printf("Enter a number: ");
+
+        printf("\n-------------------------------\n");
+        printf("Enter a number: \n=>");
         scanf("%s", num);
-
-
-        printf("\nEnter the base of the number: ");
+        printf("What's the base of that number?\n=>");
         scanf("%d", &from_base);
+        printf("\n-------------------------------\n");
 
+/*touch rien touche pas comment l pointer*/
         const char* from_base_string = "";
+        /*fookin switch case*/
         switch(from_base) {
             case 2:
                 from_base_string = "binary";
@@ -34,8 +37,9 @@ int main()
                 printf("Invalid choice\n");
                 return 0;
         }
-
-        printf("\nSelect the base to convert to:\n");
+        /*another one*/
+       // printf("-------------------------------\n");
+        printf("Select the base to convert to:\n");
         printf("1. Binary\n");
         printf("2. Octal\n");
         printf("3. Decimal\n");
@@ -43,6 +47,8 @@ int main()
         printf("5. Quit\n");
         printf("Enter your choice: ");
         scanf("%d", &to_base);
+        printf("-------------------------------\n");
+
 
         const char* to_base_string = "";
         switch(to_base) {
@@ -72,7 +78,7 @@ int main()
         char *converted_num = convert_base(num, from_base, to_base);
         if (converted_num) 
         {
-        printf("\n\n-----------------------\n");
+        printf("-----------------------\n");
         printf("\
             |From the {%s} base.|\n\
             |Converted to the {%s} base.|\n\
@@ -81,15 +87,14 @@ int main()
         printf("-----------------------\n");
 
         } else {
-            printf("\nInvalid number or base\n");
+            printf("Invalid number or base\n");
         }
 
-        printf("\nWould you like to repeat the program? (y/n) ");
+        printf("Would you like to repeat the program? (y/n) ");
         scanf(" %c", &repeat);
        if (repeat == 'n')
     {
-        printf("goodbye");
-        system("cls");
+        printf("Good Bye.");
         return 0;
     }
         
