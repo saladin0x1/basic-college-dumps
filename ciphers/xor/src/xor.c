@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 
-void xorEncryptDecrypt(char *input, char *key) {
-    int input_len = strlen(input);
+#define MAX_INPUT_SIZE 1000
+
+
+// Function to perform XOR encryption or decryption on the input string using the provided key
+void xorEncryptDecrypt(char *input, char *key, int input_len) {
     int key_len = strlen(key);
 
     for (int i = 0; i < input_len; i++) {
@@ -10,58 +13,72 @@ void xorEncryptDecrypt(char *input, char *key) {
     }
 }
 
-void base64Encode(char *input, char *output) {
+// Function to encode the input string in base64 using an external command
+void base64Encode(char *input, char *output, int input_len) {
     FILE *fp = popen("base64", "w");
     if (fp == NULL) {
         fprintf(stderr, "Error opening pipe for base64 encoding.\n");
         return;
     }
 
-    fprintf(fp, "%s", input);
+    // Writing the input to the external command for base64 encoding
+    fwrite(input, sizeof(char), input_len, fp);
     fflush(fp);
     pclose(fp);
 }
 
-void base64Decode(char *input, char *output) {
+// Function to decode the input string from base64 using an external command
+void base64Decode(char *input, char *output, int output_len) {
     FILE *fp = popen("base64 -d", "w");
     if (fp == NULL) {
         fprintf(stderr, "Error opening pipe for base64 decoding.\n");
         return;
     }
 
-    fprintf(fp, "%s", input);
+    // Writing the input to the external command for base64 decoding
+    fwrite(input, sizeof(char), strlen(input), fp);
     fflush(fp);
     pclose(fp);
 }
 
 int main() {
-    char choice[2];
-    printf("Enter your choice (1 for encrypt, 2 for decrypt): ");
-    scanf("%1s", choice);
+    char choice;
+    printf("Enter your choice (1 for encrypt, 2 for decrypt): \n ==>");
+    scanf(" %c%*c", &choice);  // %*c to consume the newline character
 
-    if (strcmp(choice, "1") == 0 || strcmp(choice, "2") == 0) {
-        char input[100];
-        char key[100];
+    // Validate the user's choice
+    if (choice == '1' || choice == '2') {
+        char input[MAX_INPUT_SIZE];
+        char key[MAX_INPUT_SIZE];
 
-        printf("Enter the string to %s: ", (strcmp(choice, "1") == 0) ? "encrypt" : "decrypt");
-        scanf(" %[^\n]", input);
+        // Get the input string from the user
+        printf("Enter the string to %s: ", (choice == '1') ? "encrypt" : "decrypt");
+        scanf(" %[^\n]%*c", input);  // %[^\n] to read until newline, %*c to consume the newline character
 
+        // Get the XOR key from the user
         printf("Enter the XOR key: ");
-        scanf(" %[^\n]", key);
+        scanf(" %[^\n]%*c", key);  // %[^\n] to read until newline, %*c to consume the newline character
 
-        if (strcmp(choice, "1") == 0) {
-            base64Encode(input, input);
+        // Calculate the length of the input string
+        int input_len = strlen(input);
+
+        // Perform base64 encoding if the choice is encryption
+        if (choice == '1') {
+            base64Encode(input, input, input_len);
         }
 
-        xorEncryptDecrypt(input, key);
+        // Perform XOR encryption or decryption based on user choice
+        xorEncryptDecrypt(input, key, input_len);
 
-        if (strcmp(choice, "2") == 0) {
-            base64Decode(input, input);
+        // Perform base64 decoding if the choice is decryption
+        if (choice == '2') {
+            base64Decode(input, input, input_len);
         }
 
-        printf("%s string: %s\n", (strcmp(choice, "1") == 0) ? "Encrypted" : "Decrypted", input);
-
+        // Display the result
+        printf("%s string: %s\n", (choice == '1') ? "Encrypted" : "Decrypted", input);
     } else {
+        // Display an error message for an invalid choice
         printf("Invalid choice. Please enter '1' for encrypt or '2' for decrypt.\n");
     }
 
